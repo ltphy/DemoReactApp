@@ -1,9 +1,17 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, Picker} from 'react-native';
-
+import React, {useEffect, useState} from 'react';
+import {View, Text, TextInput} from 'react-native';
+import {Picker} from '@react-native-community/picker';
+import {useForm} from "react-hook-form";
 const ContentInfo = () => {
     const [selectedValue, setSelectedValue] = useState('Choose Value');
     const [robotName, setRobotName] = useState('');
+
+    const {register, setValue} = useForm();
+
+    useEffect(()=>{
+        register('Name');
+        register('SecondName');
+    },[register]);
     return (
         <View
             style={{
@@ -34,6 +42,7 @@ const ContentInfo = () => {
                     <TextInput
                         style={{borderRadius: 5, borderWidth: 1, borderStyle: 'solid'}}
                         onChangeText={(text) => {
+                            setValue('Name', text);
                             setRobotName(text);
                         }}
                     />
@@ -42,6 +51,10 @@ const ContentInfo = () => {
                     <Text> Name</Text>
                     <TextInput
                         style={{borderRadius: 5, borderWidth: 1, borderStyle: 'solid'}}
+                        onChangeText={(text) => {
+                            setValue('SecondName', text);
+                            setRobotName(text);
+                        }}
                     />
                 </View>
                 <Text> Options </Text>
