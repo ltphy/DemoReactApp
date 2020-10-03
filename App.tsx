@@ -5,9 +5,9 @@
  * @format
  * @flow strict-local
  */
-import React from 'react';
+import React from "react";
 import ContentInfo from './source/screens/ContentInfos';
-const App: () => React$Node = () => {
+const App:React.FC = () => {
   return (
     <>
       <ContentInfo/>
