@@ -2,25 +2,33 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, Button, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import {useForm} from "react-hook-form";
-import {ItemValue} from "@react-native-community/picker/typings/Picker";
-import {contentStyles, pickerStyle} from "./ContentInfo.css";
-import {PickerValue} from "./interfaces";
+import {contentStyles} from "./ContentInfo.css";
 import {manga, Sex} from "./constants/defaultValues";
-import RNPickerSelect from 'react-native-picker-select';
+import RNPickerSelect, {Item} from 'react-native-picker-select';
+// @ts-ignore
+import {Chevron} from 'react-native-shapes';
+import {CustomPickerSelect} from "../../components/CustomPickerSelect";
 
 const ContentInfo = () => {
-    const [sexValue, setSexValue] = useState('Choose Value');
+    const [sexValue, setSexValue] = useState<string | null>('');
     const [mangaValue, setMangaValue] = useState<string | null>("");
 
-    const [robotName, setRobotName] = useState('');
-
+    const [yourName, setYourName] = useState<string | null>("");
     const {register, setValue, handleSubmit} = useForm();
-    const [mangaPickers, setMangaList] = useState<PickerValue[] | undefined>();
+    const [mangaPickers, setMangaList] = useState<Item[] | undefined>();
+    const [mangaError, setMangaError] = useState<boolean>(false);
+    const [sexError, setSexError] = useState<boolean>(false);
+    const [sexPickers, setSexPickersList] = useState<Item[] | undefined>();
     useEffect(() => {
         const mangaPickers = manga.map((valuePicker) => {
             return {label: valuePicker, value: valuePicker};
         });
         setMangaList(mangaPickers);
+
+        const sexPickers = Sex.map((valuePicker) => {
+            return {label: valuePicker, value: valuePicker};
+        });
+        setSexPickersList(sexPickers);
     }, []);
     useEffect(() => {
         register('Name');
@@ -28,44 +36,56 @@ const ContentInfo = () => {
     }, [register]);
 
     const renderManga = () => {
-        console.log("RENDER MANGA");
-        console.log(mangaValue);
+        console.log("Manga Value: ", mangaValue);
         return (
-            mangaPickers && <RNPickerSelect
-                value={mangaValue}
-                onValueChange={(value) => {
-                    setMangaValue(value);
-                    console.log(value);
-                }}
-                items={mangaPickers}
-                placeholder={{label: "Select a manga", value: null, color: '#9EA0A4'}}
-                style={pickerStyle}
-            />
-
+            <View style={{marginBottom: 10}}>
+                {
+                    mangaPickers && <CustomPickerSelect
+                        value={mangaValue}
+                        onValueSelect={(value) => {
+                            if (value !== mangaValue) {
+                                setMangaValue(value);
+                            }
+                        }}
+                        // style={pickerStyle}
+                        pickers={mangaPickers}
+                        placeholderLabel={"Select a manga"}
+                        isError={mangaError}
+                    />
+                }
+            </View>
         );
     };
 
     const renderSex = () => {
         return (
-            <Picker
-                selectedValue={sexValue}
-                onValueChange={(itemValue: ItemValue, itemIndex: number) => {
-                    setSexValue(itemValue.toString());
-                    console.log(itemValue);
-                }}>
-                <Picker.Item label="ChooseValue" value=""/>
+            <View style={{marginBottom: 10}}>
                 {
-                    Sex.map((value) => {
-                        return (<Picker.Item label={value} value={value} key={value}/>)
-                    })
-                }
+                    sexPickers &&
+                    <CustomPickerSelect value={sexValue}
 
-            </Picker>
+                                        onValueSelect={(value) => {
+                                            setSexValue(value);
+                                        }}
+                                        pickers={sexPickers}
+                                        placeholderLabel={"Select Sex"}
+                                        isError={sexError}/>
+                }
+            </View>
         );
     };
     const onApply = (data: any) => {
         const appliedData = JSON.stringify(data);
-        console.log(appliedData);
+        if (!mangaValue && !mangaError) {
+            setMangaError(true);
+        } else if (mangaValue && mangaError) {
+            setMangaError(false);
+        }
+        if (!sexValue && !sexError) {
+            setSexError(true);
+        } else if (sexValue && sexError) {
+            setSexError(false);
+        }
     };
     const renderApplyButton = () => {
         return (
@@ -73,22 +93,23 @@ const ContentInfo = () => {
                 style={contentStyles.buttonApply}
                 onPress={handleSubmit(onApply)}
             >
-                <Text>Press Here</Text>
+                <Text>Apply</Text>
             </TouchableOpacity>);
     };
 
     const renderInformationInput = () => {
         return (
             <View style={contentStyles.informationInput}>
-                {renderSex()}
                 {renderManga()}
+
+                {renderSex()}
                 <View style={{marginBottom: 5}}>
                     <Text style={{fontWeight: 'bold'}}> Name</Text>
                     <TextInput
                         style={contentStyles.textInput}
                         onChangeText={(text) => {
                             setValue('Name', text);
-                            setRobotName(text);
+                            setYourName(text);
                         }}
                     />
                 </View>
@@ -103,7 +124,7 @@ const ContentInfo = () => {
             >
                 <View>
                     <Text> Name:</Text>
-                    <Text>{robotName}</Text>
+                    <Text>{yourName}</Text>
                 </View>
             </View>
         );

@@ -22,46 +22,16 @@ export const contentStyles = StyleSheet.create({
         width: "25%",
         padding: 10,
         marginLeft: 20,
-        flexDirection:"column",
-        justifyContent:"flex-start"
+        flexDirection: "column",
+        justifyContent: "flex-start"
 
     },
     buttonApply: {
-        backgroundColor:"#a3d8f4",
+        backgroundColor: "#a3d8f4",
         padding: 10,
         width: "50%",
         alignItems: 'center',
-        alignSelf:'center',
+        alignSelf: 'center',
     },
 
 });
-
-export const pickerStyle = {
-    inputIOS: {
-        color: 'white',
-        paddingTop: 13,
-        paddingHorizontal: 10,
-        paddingBottom: 12,
-    },
-    inputAndroid: {
-        color: 'black',
-        borderColor: "#a3d8f4",
-        borderRadius: 5,
-    },
-
-    underline: { borderTopWidth: 0 },
-    icon: {
-        position: 'absolute',
-        backgroundColor: '#a3d8f4',
-        borderTopWidth: 5,
-        borderTopColor: '#00000099',
-        borderRightWidth: 5,
-        borderRightColor: 'transparent',
-        borderLeftWidth: 5,
-        borderLeftColor: 'transparent',
-        width: 0,
-        height: 0,
-        top: 20,
-        right: 15,
-    },
-};
