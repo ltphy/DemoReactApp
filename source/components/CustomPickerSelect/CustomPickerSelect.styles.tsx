@@ -21,5 +21,8 @@ export const pickerStyle = StyleSheet.create({
         color: 'black',
         paddingRight: 30, // to ensure the text is never behind the icon
     },
-
+    iconContainer: {
+        top: 5,
+        right: 10
+    }
 });

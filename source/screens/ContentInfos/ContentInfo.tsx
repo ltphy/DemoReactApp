@@ -16,20 +16,19 @@ import {contentStyles} from "./ContentInfo.css";
 import {DataString, manga, Sex} from "./constants/defaultValues";
 import RNPickerSelect, {Item} from 'react-native-picker-select';
 import {CustomPickerSelect} from "../../components/CustomPickerSelect";
-import {ModalContext} from "../../components/ModalContext/ModalContext";
+import {useGenericModal} from "../../components/ModalContext/ModalContext";
 
 const ContentInfo = () => {
     const [sexValue, setSexValue] = useState<string | null>('');
     const [mangaValue, setMangaValue] = useState<string | null>("");
-
-    const [yourName, setYourName] = useState<string | null>("");
     const {register, setValue, handleSubmit} = useForm();
     const [mangaPickers, setMangaList] = useState<Item[] | undefined>();
     const [mangaError, setMangaError] = useState<boolean>(false);
     const [sexError, setSexError] = useState<boolean>(false);
     const [sexPickers, setSexPickersList] = useState<Item[] | undefined>();
     const [dataString, setDataString] = useState<string[]>([]);
-    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const useModalContext = useGenericModal();
+
     useEffect(() => {
         const mangaPickers = manga.map((valuePicker) => {
             return {label: valuePicker, value: valuePicker};
@@ -108,7 +107,7 @@ const ContentInfo = () => {
             setSexError(false);
         }
         if (error) {
-            setModalVisible(true);
+            useModalContext.notifyError("Please check your input!");
         }
 
     };
@@ -132,7 +131,6 @@ const ContentInfo = () => {
                     style={contentStyles.textInput}
                     onChangeText={(text) => {
                         setValue('Name', text);
-                        setYourName(text);
                     }}
                     placeholder={"params"}
                 />
@@ -161,11 +159,6 @@ const ContentInfo = () => {
         <View
             style={contentStyles.wholeContainer}
         >
-            <ModalContext content={"Please check your input!"}
-                          modalVisible={modalVisible}
-                          setClose={() => {
-                              setModalVisible(false)
-                          }}/>
             {renderContainInfo()}
             {renderInformationInput()}
         </View>

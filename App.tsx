@@ -7,12 +7,14 @@
  */
 import React from "react";
 import ContentInfo from './source/screens/ContentInfos';
-const App:React.FC = () => {
-  return (
-    <>
-      <ContentInfo/>
-    </>
-  );
+import {ModalContext} from "./source/components/ModalContext";
+
+const App: React.FC = () => {
+    return (
+        <ModalContext>
+            <ContentInfo/>
+        </ModalContext>
+    );
 };
 
 export default App;
