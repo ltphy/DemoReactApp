@@ -2,10 +2,7 @@ import React, {useEffect} from 'react';
 import {View} from "react-native";
 import RNPickerSelect, {Item} from "react-native-picker-select";
 import {pickerStyle} from "./CustomPickerSelect.styles";
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Evillcons from 'react-native-vector-icons/EvilIcons';
-// @ts-ignore
-import {Chevron} from 'react-native-shapes';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 interface customPickerProps {
     value: string | number | null;
@@ -16,7 +13,7 @@ interface customPickerProps {
 }
 
 export const CustomPickerSelect = (props: customPickerProps) => {
-    const placeholder = {label: props.placeholderLabel, value: null, color:"#9EA0A4"};
+    const placeholder = {label: props.placeholderLabel, value: null, color: "#9EA0A4"};
 
     return (
         <RNPickerSelect
@@ -27,8 +24,10 @@ export const CustomPickerSelect = (props: customPickerProps) => {
             items={props.pickers}
             placeholder={placeholder}
             Icon={() =>
-                <Chevron size={1.5} color="gray"/>
+                // <Chevron size={1.5} color="gray"/>
+                <EvilIcons name="chevron-down" size={40} color="gray"/>
             }
+
             style={props.isError ? {
                 ...pickerStyle,
                 inputAndroid: {...pickerStyle.inputAndroid, borderColor: 'red'},

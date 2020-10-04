@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TextInput, Button, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, Button, TouchableOpacity, ScrollView} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import {useForm} from "react-hook-form";
 import {contentStyles} from "./ContentInfo.css";
-import {manga, Sex} from "./constants/defaultValues";
+import {DataString, manga, Sex} from "./constants/defaultValues";
 import RNPickerSelect, {Item} from 'react-native-picker-select';
 // @ts-ignore
 import {Chevron} from 'react-native-shapes';
 import {CustomPickerSelect} from "../../components/CustomPickerSelect";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const ContentInfo = () => {
     const [sexValue, setSexValue] = useState<string | null>('');
@@ -19,6 +20,7 @@ const ContentInfo = () => {
     const [mangaError, setMangaError] = useState<boolean>(false);
     const [sexError, setSexError] = useState<boolean>(false);
     const [sexPickers, setSexPickersList] = useState<Item[] | undefined>();
+    const [dataString, setDataString] = useState<string[]>([]);
     useEffect(() => {
         const mangaPickers = manga.map((valuePicker) => {
             return {label: valuePicker, value: valuePicker};
@@ -29,6 +31,11 @@ const ContentInfo = () => {
             return {label: valuePicker, value: valuePicker};
         });
         setSexPickersList(sexPickers);
+        const displayInfo = DataString.split("\\n").map((value) => {
+            return value;
+        });
+        setDataString(displayInfo);
+
     }, []);
     useEffect(() => {
         register('Name');
@@ -76,6 +83,7 @@ const ContentInfo = () => {
     };
     const onApply = (data: any) => {
         const appliedData = JSON.stringify(data);
+        //set error when value "" and mangaError is false
         if (!mangaValue && !mangaError) {
             setMangaError(true);
         } else if (mangaValue && mangaError) {
@@ -86,6 +94,7 @@ const ContentInfo = () => {
         } else if (sexValue && sexError) {
             setSexError(false);
         }
+
     };
     const renderApplyButton = () => {
         return (
@@ -103,29 +112,33 @@ const ContentInfo = () => {
                 {renderManga()}
 
                 {renderSex()}
-                <View style={{marginBottom: 5}}>
-                    <Text style={{fontWeight: 'bold'}}> Name</Text>
-                    <TextInput
-                        style={contentStyles.textInput}
-                        onChangeText={(text) => {
-                            setValue('Name', text);
-                            setYourName(text);
-                        }}
-                    />
-                </View>
+                <TextInput
+                    style={contentStyles.textInput}
+                    onChangeText={(text) => {
+                        setValue('Name', text);
+                        setYourName(text);
+                    }}
+                    placeholder={"params"}
+                />
                 {renderApplyButton()}
             </View>
         );
     };
     const renderContainInfo = () => {
         return (
-            <View
-                style={contentStyles.infoContainer}
-            >
-                <View>
-                    <Text> Name:</Text>
-                    <Text>{yourName}</Text>
-                </View>
+            <View style={contentStyles.infoContainer}>
+                <Text style={contentStyles.detailTitle}>Details</Text>
+
+                <ScrollView style={contentStyles.infoScrollView}>
+                    <View>
+                        {
+                            dataString.map((value, index) => {
+                                return (<Text style={contentStyles.infoText} key={index.toString()}> {value}</Text>);
+                            })
+                        }
+                        <Icon name="rocket" size={30} color="#900"/>
+                    </View>
+                </ScrollView>
             </View>
         );
     };

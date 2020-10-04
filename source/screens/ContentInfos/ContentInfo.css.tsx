@@ -8,20 +8,24 @@ export const contentStyles = StyleSheet.create({
         alignItems: 'center',
     },
     infoContainer: {
-        backgroundColor: "#7579e7",
+        backgroundColor: "#9ab3f5",
         width: "30%",
         borderRadius: 5,
         padding: 12,
+        height: 250,
+        marginRight: "5%",
     },
     textInput: {
-        borderRadius: 5,
-        borderWidth: 1,
-        borderStyle: 'solid'
+        borderRadius: 8,
+        borderWidth: 3,
+        borderStyle: 'solid',
+        fontSize: 20,
+        borderColor: '#a3d8f4',
+        marginBottom: 10,
     },
     informationInput: {
         width: "25%",
         padding: 10,
-        marginLeft: 20,
         flexDirection: "column",
         justifyContent: "flex-start"
 
@@ -33,5 +37,18 @@ export const contentStyles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
     },
-
+    detailTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 10,
+    },
+    infoText: {
+        fontSize: 20,
+        marginBottom: 10,
+    },
+    infoScrollView: {
+        marginHorizontal: 10,
+        marginVertical: 15,
+        padding: 5
+    }
 });

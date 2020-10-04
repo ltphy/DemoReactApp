@@ -2,16 +2,17 @@ import {StyleSheet} from "react-native";
 
 export const pickerStyle = StyleSheet.create({
     inputIOS: {
-        color:'black',
+        color: 'black',
         paddingHorizontal: 10,
         paddingVertical: 8,
         borderColor: '#a3d8f4',
         paddingRight: 30, // to ensure the text is never behind the icon
         borderWidth: 3,
         borderRadius: 8,
+        fontSize: 20,
     },
     inputAndroid: {
-        fontSize: 16,
+        fontSize: 20,
         paddingHorizontal: 10,
         paddingVertical: 8,
         borderWidth: 3,
@@ -20,8 +21,11 @@ export const pickerStyle = StyleSheet.create({
         color: 'black',
         paddingRight: 30, // to ensure the text is never behind the icon
     },
-    iconContainer: {
-        top: 20,
-        right: 20,
+    viewContainer: {
+        height: 100,
     },
+    iconContainer: {
+        top: 8,
+        right: 10,
+    }
 });
