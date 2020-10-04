@@ -1,14 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TextInput, Button, TouchableOpacity, ScrollView} from 'react-native';
+import {
+    View,
+    Text,
+    TextInput,
+    Button,
+    TouchableOpacity,
+    ScrollView,
+    Modal,
+    Alert,
+    TouchableHighlight
+} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import {useForm} from "react-hook-form";
 import {contentStyles} from "./ContentInfo.css";
 import {DataString, manga, Sex} from "./constants/defaultValues";
 import RNPickerSelect, {Item} from 'react-native-picker-select';
-// @ts-ignore
-import {Chevron} from 'react-native-shapes';
 import {CustomPickerSelect} from "../../components/CustomPickerSelect";
-import Icon from "react-native-vector-icons/FontAwesome";
+import {ModalContext} from "../../components/ModalContext/ModalContext";
 
 const ContentInfo = () => {
     const [sexValue, setSexValue] = useState<string | null>('');
@@ -21,6 +29,7 @@ const ContentInfo = () => {
     const [sexError, setSexError] = useState<boolean>(false);
     const [sexPickers, setSexPickersList] = useState<Item[] | undefined>();
     const [dataString, setDataString] = useState<string[]>([]);
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
     useEffect(() => {
         const mangaPickers = manga.map((valuePicker) => {
             return {label: valuePicker, value: valuePicker};
@@ -37,13 +46,14 @@ const ContentInfo = () => {
         setDataString(displayInfo);
 
     }, []);
+
+
     useEffect(() => {
         register('Name');
         register('SecondName');
     }, [register]);
 
     const renderManga = () => {
-        console.log("Manga Value: ", mangaValue);
         return (
             <View style={{marginBottom: 10}}>
                 {
@@ -84,26 +94,32 @@ const ContentInfo = () => {
     const onApply = (data: any) => {
         const appliedData = JSON.stringify(data);
         //set error when value "" and mangaError is false
-        if (!mangaValue && !mangaError) {
+        let error = false;
+        if (!mangaValue) {
             setMangaError(true);
+            error = true;
         } else if (mangaValue && mangaError) {
             setMangaError(false);
         }
-        if (!sexValue && !sexError) {
+        if (!sexValue) {
             setSexError(true);
+            error = true;
         } else if (sexValue && sexError) {
             setSexError(false);
+        }
+        if (error) {
+            setModalVisible(true);
         }
 
     };
     const renderApplyButton = () => {
         return (
-            <TouchableOpacity
+            <TouchableHighlight
                 style={contentStyles.buttonApply}
                 onPress={handleSubmit(onApply)}
             >
-                <Text>Apply</Text>
-            </TouchableOpacity>);
+                <Text style={contentStyles.applyText}>Apply</Text>
+            </TouchableHighlight>);
     };
 
     const renderInformationInput = () => {
@@ -136,7 +152,6 @@ const ContentInfo = () => {
                                 return (<Text style={contentStyles.infoText} key={index.toString()}> {value}</Text>);
                             })
                         }
-                        <Icon name="rocket" size={30} color="#900"/>
                     </View>
                 </ScrollView>
             </View>
@@ -146,6 +161,11 @@ const ContentInfo = () => {
         <View
             style={contentStyles.wholeContainer}
         >
+            <ModalContext content={"Please check your input!"}
+                          modalVisible={modalVisible}
+                          setClose={() => {
+                              setModalVisible(false)
+                          }}/>
             {renderContainInfo()}
             {renderInformationInput()}
         </View>

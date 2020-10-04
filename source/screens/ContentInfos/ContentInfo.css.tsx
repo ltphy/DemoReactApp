@@ -22,6 +22,7 @@ export const contentStyles = StyleSheet.create({
         fontSize: 20,
         borderColor: '#a3d8f4',
         marginBottom: 10,
+        paddingLeft: 10,
     },
     informationInput: {
         width: "25%",
@@ -36,6 +37,8 @@ export const contentStyles = StyleSheet.create({
         width: "50%",
         alignItems: 'center',
         alignSelf: 'center',
+        borderRadius: 20,
+        elevation: 5
     },
     detailTitle: {
         fontSize: 20,
@@ -50,5 +53,11 @@ export const contentStyles = StyleSheet.create({
         marginHorizontal: 10,
         marginVertical: 15,
         padding: 5
+    },
+    applyText: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
+        fontSize: 20,
     }
 });
